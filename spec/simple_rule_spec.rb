@@ -6,13 +6,13 @@ describe SimpleRule do
   describe "#price" do
     context "when the item matches" do
       it "returns the item's price" do
-        subject.price("A").should == 123
+        subject.price("A", stub).should == 123
       end
     end
 
     context "when the item does not match" do
       it "returns zero" do
-        subject.price("B").should == 0
+        subject.price("B", stub).should == 0
       end
     end
   end

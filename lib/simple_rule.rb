@@ -3,7 +3,7 @@ class SimpleRule
     @item, @price = item, price
   end
 
-  def price item
+  def price item, checkout
     @item == item ? @price : 0
   end
 end

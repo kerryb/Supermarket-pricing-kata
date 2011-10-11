@@ -3,7 +3,7 @@ class RuleSet
     @rules = rules
   end
 
-  def price item
-    @rules.map{|r| r.price item }.reduce(0, &:+)
+  def price item, checkout
+    @rules.map{|r| r.price item, checkout }.reduce(0, &:+)
   end
 end

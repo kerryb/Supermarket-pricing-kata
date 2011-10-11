@@ -8,8 +8,8 @@ describe Checkout do
   end
 
   describe "scanning an item" do
-    before { RULES.stub(:price).with("A").and_return 42 }
-    before { RULES.stub(:price).with("B").and_return 69 }
+    before { RULES.stub(:price).with("A", subject).and_return 42 }
+    before { RULES.stub(:price).with("B", subject).and_return 69 }
 
     it "increments the total according to the rules" do
       subject.scan "A"
@@ -20,6 +20,21 @@ describe Checkout do
       subject.scan "A"
       subject.scan "B"
       subject.total.should == 111
+    end
+
+    it "keeps track of the number of each item bought" do
+      subject.scan "A"
+      subject.scan "A"
+      subject.scan "B"
+      subject.number_already_bought("A").should == 2
+    end
+
+    it "doesn't increment the number bought until after getting the price" do
+      RULES.stub(:price) do |item, checkout|
+        checkout.number_already_bought "A"
+      end
+      subject.scan "A"
+      subject.total.should == 0
     end
   end
 end

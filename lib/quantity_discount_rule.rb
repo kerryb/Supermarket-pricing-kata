@@ -5,15 +5,15 @@ class QuantityDiscountRule
     @number_purchased = 0
   end
 
-  def price item
-    @item == item ? @basic_price - discount : 0
+  def price item, checkout
+    return 0 unless @item == item
+    @basic_price - discount(checkout)
   end
 
   private
 
-  def discount
-    @number_purchased = (@number_purchased + 1) % @discount_quantity
-    if @number_purchased == 0
+  def discount checkout
+    if checkout.number_already_bought(@item) % @discount_quantity == @discount_quantity - 1
       @basic_price * @discount_quantity - @discount_price
     else
       0
